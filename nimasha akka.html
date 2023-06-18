@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Fuel Volume Calculator</title>
+    <meta charset="UTF-8">
+  </head>
+  <body>
+    <h1>Fuel Volume Calculator</h1>
+    <form>
+      <label for="tank-length">Tank Length (m):</label>
+      <input type="number" id="tank-length" name="tank-length" required><br><br>
+      
+      <label for="tank-diameter">Tank Diameter (m):</label>
+      <input type="number" id="tank-diameter" name="tank-diameter" required><br><br>
+      
+      <label for="sensor-height">Sensor Reading (m):</label>
+      <input type="number" id="sensor-height" name="sensor-height" readonly><br><br>
+      
+      <div id="fuel-volume"></div>
+    </form>
+    
+    <script>
+        // JavaScript code to calculate tank volume based on the given formula
+
+const tankLengthInput = document.getElementById('tank-length');
+const tankDiameterInput = document.getElementById('tank-diameter');
+const sensorHeightInput = document.getElementById('sensor-height');
+const fuelVolumeDisplay = document.getElementById('fuel-volume');
+
+let tankLength = parseFloat(tankLengthInput.value);
+let tankDiameter = parseFloat(tankDiameterInput.value);
+let tankRadius = tankDiameter / 2;
+let sensorHeight = 0;
+let tankVolume = calculateTankVolume(tankLength, tankRadius, sensorHeight);
+
+fuelVolumeDisplay.innerHTML = `Current fuel volume: ${tankVolume.toFixed(2)} cubic meters`;
+
+
+setInterval(function() {
+  // Simulate sensor reading - replace this with actual code to read sensor data
+  sensorHeight = Math.random() * tankRadius;
+  sensorHeightInput.value = sensorHeight.toFixed(2);
+
+  tankLength = parseFloat(tankLengthInput.value);
+  tankDiameter = parseFloat(tankDiameterInput.value);
+  tankRadius = tankDiameter / 2;
+
+  tankVolume = calculateTankVolume(tankLength, tankRadius, sensorHeight);
+  fuelVolumeDisplay.innerHTML = `Current fuel volume: ${tankVolume.toFixed(2)} cubic meters`;
+}, 1000);
+
+// Function to calculate tank volume based on the given formula
+function calculateTankVolume(length, radius, height) {
+  const volume = (Math.sqrt(2 * height * radius - Math.pow(height, 2)) * (height - radius)) + (Math.pow(radius, 2) * (Math.PI - Math.acos((height - radius) / radius))) * length;
+  return volume;
+}
+</script>
+
+</body>
+</html>
+
